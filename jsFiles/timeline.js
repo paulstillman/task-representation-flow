@@ -1,7 +1,15 @@
-var trial = {
+var timeline = [];
+
+var game = {
     type: 'canvas-keyboard-response',
-    stimulus: drawRect,
+    stimulus: draw,
+    canvas_size: [300, 300],
     choices: ['e','i'],
     prompt: '<p>Is this a circle or a rectangle? Press "e" for circle and "i" for rectangle.</p>',
-    data: {shape: 'rectangle'}
-}
+};
+
+timeline.push(game);
+
+jsPsych.init({
+  timeline: timeline
+});
