@@ -1,5 +1,4 @@
 function draw(c) {
-
 	// canvas dimensions
 	const height = c.height;
 	const width = c.width;
