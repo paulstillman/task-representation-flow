@@ -27,12 +27,16 @@
 		ballY: [], 			// ball's Y coordinates on all trials
 		totalHits: 0,		// total number of hits
 		totalTrials: 0,		// total number of trials
+		targetLoc: []
 	}
 
 	// run slingshot game
 	game.run = function (c, trial) {
 
 		// settings
+		var height = c.height;
+		var width = c.width;
+
 		var set = {
 			ball: {
 				x: trial.ball_xPos, 
@@ -48,16 +52,15 @@
 				col: trial.target_color, 
 				colHit: trial.target_color_hit},
 			sling: {stiffness: trial.tension} 
-		}
-
-		var height = c.height;
-		var width = c.width;
+		};
 		set.ball.x = set.ball.x*width;
 		set.ball.y = set.ball.y*height;
 		set.target.x = set.target.x*width;
-		set.target.y = set.target.y*height;
+		set.target.y = set.target.y.map(y => { return y*height });
 		set.sling.x = set.ball.x;
 		set.sling.y = set.ball.y;
+
+		var loc = 0;
 
 		// create renderer
 		var render = Render.create({ 
@@ -82,8 +85,8 @@
 		};
 
 		// constructor function: target
-		function Target() {
-			this.body = Bodies.rectangle(set.target.x, set.target.y, set.target.h, set.target.w, {
+		function Target(loc) {
+			this.body = Bodies.rectangle(set.target.x, set.target.y[loc], set.target.h, set.target.w, {
 				isStatic: true,
 				render: {
 					fillStyle: set.target.col,
@@ -186,6 +189,12 @@
 					sling.pointB.x = null;
 					sling.pointB.y = null;
 					sling.bodyB = ball;
+
+					// relocate target
+					game.data.targetLoc.push(set.target.y[loc])
+					Composite.remove(engine.world, target);
+					loc = Math.floor(Math.random() * set.target.y.length);
+					target = new Target(loc).body;
 				};
 			})
 		}
@@ -193,7 +202,7 @@
 		// construct bodies and mouse
 		var ball = new Ball().body;
 		var tracker = { ball: ball };
-		var target = new Target().body;
+		var target = new Target(loc).body;
 		var sling = new Sling().body;
 		makeMouse();
 

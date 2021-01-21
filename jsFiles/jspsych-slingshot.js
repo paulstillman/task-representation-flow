@@ -152,8 +152,9 @@ jsPsych.plugins["slingshot-game"] = (function () {
       var trial_data = {
         "totalTrials": slingshot.data.totalTrials,
         "totalHits": slingshot.data.totalHits,
-        "xCoordinates": slingshot.data.ballX,
-        "yCoordinates": slingshot.data.ballY
+        "xLocTarget": slingshot.data.targetLoc,
+        "xLocBall": slingshot.data.ballX,
+        "yLocBall": slingshot.data.ballY
       };
 
       // clear the display
