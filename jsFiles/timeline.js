@@ -16,7 +16,6 @@ var game = {
     target_yPos: [.2, .4, .5, .6, .8],
     friction: .02,
     tension: .03,
-    prompt: '<p>Get as many hits as you can!</p>',
     on_finish: function(data) {
     	console.log(data)
     }

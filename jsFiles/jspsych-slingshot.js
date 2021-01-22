@@ -118,8 +118,9 @@ jsPsych.plugins["slingshot-game"] = (function () {
   }
 
   plugin.trial = function (display_element, trial) {
+    var new_html = '<div id="jspsych-canvas-keyboard-response-stimulus">' + '<canvas id="feedback" height="40" width="' + trial.canvas_size[1] + '"></canvas>' + '</div>';
 
-    var new_html = '<div id="jspsych-canvas-keyboard-response-stimulus">' + '<canvas id="jspsych-canvas-stimulus" height="' + trial.canvas_size[0] + '" width="' + trial.canvas_size[1] + '"></canvas>' + '</div>';
+    var new_html = new_html + '<div id="jspsych-canvas-keyboard-response-stimulus">' + '<canvas id="jspsych-canvas-stimulus" height="' + trial.canvas_size[0] + '" width="' + trial.canvas_size[1] + '"></canvas>' + '</div>';
     
     // add prompt
     if (trial.prompt !== null) {
@@ -130,6 +131,24 @@ jsPsych.plugins["slingshot-game"] = (function () {
     display_element.innerHTML = new_html;
     let c = document.getElementById("jspsych-canvas-stimulus")
     trial.stimulus(c, trial)
+    let f = document.getElementById("feedback")
+    function drawFeedback(f, trial) {
+      var ctx = f.getContext('2d');
+
+      function write() {
+        ctx.clearRect(0, 0, trial.canvas_size[1], 40); // clear canvas
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText(`Total Earnings:`, (trial.canvas_size[1]/2) - 100, 20);
+        ctx.font = "bold 20px Arial";
+        ctx.fillStyle = "green";
+        ctx.fillText(`${slingshot.data.totalHits*5} cents`, (trial.canvas_size[1]/2) + 40, 20);
+        window.requestAnimationFrame(write);
+      }
+      write();
+    };
+    drawFeedback(f, trial);
+
 
     // store response
     var response = {
