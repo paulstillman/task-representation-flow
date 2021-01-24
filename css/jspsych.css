@@ -48,6 +48,20 @@
   line-height: 1.6em;
 }
 
+.instructions {
+  font-family: 'Open Sans', 'Arial', sans-serif;
+  font-size: 18px;
+  width: 900px;
+  text-align: left;
+}
+
+.qInfo {
+  font-family: 'Open Sans', 'Arial', sans-serif;
+  font-size: 18px;
+  width: 600px;
+  padding-top: 50px;
+}
+
 /* Form elements like input fields and buttons */
 
 .jspsych-display-element input[type="text"] {

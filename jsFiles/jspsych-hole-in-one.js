@@ -9,12 +9,12 @@
  **/
 
 
-jsPsych.plugins["slingshot-game"] = (function () {
+jsPsych.plugins["hole-in-one-game"] = (function () {
 
   var plugin = {};
 
   plugin.info = {
-    name: 'slingshot-game',
+    name: 'hole-in-one-game',
     description: '',
     parameters: {
       stimulus: {
@@ -72,35 +72,29 @@ jsPsych.plugins["slingshot-game"] = (function () {
         default: 10,
         description: 'Radius of the ball in pixels.'
       },
-      target_color: {
+      wall_width: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Color of the target',
-        default: 'red',
-        description: 'Color of the target in the slingshot game.'
+        pretty_name: 'Width of the wall',
+        default: 75,
+        description: 'Width of the wall in pixels.'
       },
-      target_color_hit: {
+      wall_color: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'Color of the target',
-        default: 'green',
-        description: 'Color of the target in the slingshot game.'
+        pretty_name: 'Color of the wall',
+        default: '#797D7F',
+        description: 'Color of the wall in the hold in one game.'
       },
-      target_xPos: {
+      wall_xPos: {
         type: jsPsych.plugins.parameterType.FLOAT,
-        pretty_name: 'Target position on x axis',
+        pretty_name: 'Wall position on x axis',
         default: .8,
-        description: 'Target position on x axis in terms of percent from left.'
+        description: 'Wall position on x axis in terms of percent from left.'
       },
-      target_yPos: {
-        type: jsPsych.plugins.parameterType.FLOAT,
-        pretty_name: 'Target position on y axis',
-        default: .2,
-        description: 'Target position on y axis in terms of percent from top.'
-      },
-      target_size: {
+      hole_size: {
         type: jsPsych.plugins.parameterType.INT,
-        pretty_name: 'Target size',
-        default: 20,
-        description: 'Target length and width in pixels.'
+        pretty_name: 'Hole size',
+        default: 100,
+        description: 'Size of the hole in pixels.'
       },
       friction: {
         type: jsPsych.plugins.parameterType.FLOAT,
@@ -147,11 +141,10 @@ jsPsych.plugins["slingshot-game"] = (function () {
 
       // gather the data to store for the trial
       var trial_data = {
-        "totalTrials": slingshot.data.totalTrials,
-        "totalScore": slingshot.data.totalHits,
-        "xLocBall": slingshot.data.ballX,
-        "yLocBall": slingshot.data.ballY,
-        "yLocTarget": slingshot.data.targetLoc,
+        "totalTrials": holeInOne.data.totalTrials,
+        "totalScore": holeInOne.data.totalScore,
+        "xLocBall": holeInOne.data.ballX,
+        "yLocBall": holeInOne.data.ballY
       };
 
       // clear the display
@@ -162,7 +155,7 @@ jsPsych.plugins["slingshot-game"] = (function () {
     };
 
     // listen for last trial of slingshot game
-    var listenForLastTrial = setInterval(function () { if (slingshot.data.totalTrials == trial.total_shots) end_trial() }, 200)
+    var listenForLastTrial = setInterval(function () { if (holeInOne.data.totalTrials == trial.total_shots) end_trial() }, 200)
 
     // end trial if trial_duration is set
     if (trial.trial_duration !== null) {
