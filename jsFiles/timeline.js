@@ -1,161 +1,91 @@
 
-// randomly assign to condition
-var mutInfo = Math.floor(Math.random()*2)
 
-// save condition, date, and time
-jsPsych.data.addProperties({
-    condition: mutInfo,
-    startDate: jsPsych.data.getURLVariable('date'),
-    startTime: jsPsych.data.getURLVariable('time'),
-});
+var exp = (function() {
 
-var qBlocks = (function() {
+    var p = {};
 
-    var zeroToExtremely = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
-    var zeroToALot = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
-    
-    var qInfoSling = `<div class='qInfo'>
+    // randomly assign to condition
+    var mutInfo = Math.floor(Math.random()*2);
 
-    <p><strong>Thank you for playing Target Practice!</strong></p>
-
-    <p>Now, please provide your honest assessment of Target Practice<br> 
-    by answering each of the following questions.</p></div>`;
-    
-    var qInfoHole = `<div class='qInfo'>
-
-    <p><strong>Thank you for playing Hole in One!</strong></p>
-
-    <p>Now, please provide your honest assessment of Hole in One<br> 
-    by answering each of the following questions.</p></div>`;
-
-    var questions = {};
-
-    questions.flow_sling = {
-        type: 'survey-likert',
-        preamble: qInfoSling,
-        questions: [
-            {prompt: 'How engaging was Target Practice?',
-            name: 'engaging_sling',
-            labels: zeroToExtremely},
-            {prompt: 'How engrossing was Target Practice?',
-            name: 'engrossing_sling',
-            labels: zeroToExtremely},
-            {prompt: 'How immersive was Target Practice?',
-            name: 'immersive_sling',
-            labels: zeroToExtremely}
-        ],
-        randomize_question_order: false,
-        scale_width: 500
+    // assign names to games
+    var gameNames = { 
+        game1: { full: 'Hole in One', short: 'hole' },
+        game2: { full: 'Target Practice', short: 'sling' }
     };
 
-    questions.flow_hole = {
-        type: 'survey-likert',
-        preamble: qInfoHole,
-        questions: [
-            {prompt: 'How engaging was Hole in One?',
-            name: 'engaging_hole',
-            labels: zeroToExtremely},
-            {prompt: 'How engrossing was Hole in One?',
-            name: 'engrossing_hole',
-            labels: zeroToExtremely},
-            {prompt: 'How immersive was Hole in One?',
-            name: 'immersive_hole',
-            labels: zeroToExtremely}
-        ],
-        randomize_question_order: false,
-        scale_width: 500
-    };
+    // save condition, date, and time
+    jsPsych.data.addProperties({
+        condition: mutInfo,
+        startDate: jsPsych.data.getURLVariable('date'),
+        startTime: jsPsych.data.getURLVariable('time'),
+    });
 
-    questions.enjoyment_sling = {
-        type: 'survey-likert',
-        preamble: null,
-        questions: [
-            {prompt: 'How much did you like Target Practice?',
-            name: 'like_sling',
-            labels: zeroToALot},
-            {prompt: 'How much did you dislike Target Practice?',
-            name: 'dislike_sling',
-            labels: zeroToALot},
-            {prompt: 'How enjoyable was Target Practice?',
-            name: 'enjoyable_sling',
-            labels: zeroToExtremely},
-            {prompt: 'How fun was Target Practice?',
-            name: 'fun_sling',
-            labels: zeroToExtremely},
-            {prompt: 'How entertaining was Target Practice?',
-            name: 'entertaining_sling',
-            labels: zeroToExtremely},
-        ],
-        randomize_question_order: false,
-        scale_width: 500
-    };
+    /******************
 
-    questions.enjoyment_hole = {
-        type: 'survey-likert',
-        preamble: null,
-        questions: [
-            {prompt: 'How much did you like Hole in One?',
-            name: 'like_hole',
-            labels: zeroToALot},
-            {prompt: 'How much did you dislike Hole in One?',
-            name: 'dislike_hole',
-            labels: zeroToALot},
-            {prompt: 'How enjoyable was Hole in One?',
-            name: 'enjoyable_hole',
-            labels: zeroToExtremely},
-            {prompt: 'How fun was Hole in One?',
-            name: 'fun_hole',
-            labels: zeroToExtremely},
-            {prompt: 'How entertaining was Hole in One?',
-            name: 'entertaining_hole',
-            labels: zeroToExtremely},
-        ],
-        randomize_question_order: false,
-        scale_width: 500
-    };
+        INSTRUCTIONS
 
-    return questions;
-}());
+    *******************/
 
-var infoBlocks = (function() {
+    p.inst = {}
 
-    var info = {};
-
-    // create pages
-    var block1page1 = [`<div class='instructions'>
+    // instruction pages
+    var block1page1 = `<div class='instructions'>
 
     <p><strong>Welcome!</strong></p>
 
-    <p>We are designing games that can be used by behavioral scientists to study motivation 
-    and decision making. To make the games as engaging as possible, we are getting feedback from people like you.</p>
+    <p>Thank you for agreeing to complete our survey. For the next 10 to 15 minutes, you'll be helping us 
+    answer the following question: "What makes some games more immersive and engaging than others?" 
+    Specifically, you'll play two games and provide feedback about each one. 
+    By playing games and providing feedback, you'll help us understand how to design games 
+    that are as immersive and engaging as possible.</p>
 
-    <p>You will play two different games: "Hole in One" and "Target Practice". After each game, we will ask you
-    a series of questions about your experience.</p>
+    <p>To make it easier for you to provide feedback, we will explain exactly what we mean by
+    "immersive and engaging." To continue, press your SPACEBAR.</p></div>`; 
 
-    <p>Continue to learn about and play "Hole in One".</p>
+    var block2page1 = `<div class='instructions'>
 
-    <p>After you finish, you will learn about and play "Target Practice".</p>
-    
-    <p>Press your SPACEBAR to progress through each screen.</p></div>`]; 
+    <p>Next, you'll spend a few minutes playing a game called "Hole in One." After you finish, 
+    you'll answer some questions about your experience. When you're ready, 
+    press your SPACEBAR to continue.</p></div>`; 
+
+    var block3page1 = `<div class='instructions'>
+
+    <p>Thank you! Next, you'll spend a few minutes playing a game called "Target Practice." After you finish, 
+    you'll answer some questions about your experience. When you're ready, 
+    press your SPACEBAR to continue.</p></div>`; 
 
     // combine pages into blocks
-    info.block1 = {
+    p.inst.block1 = {
         type: "instructions",
         pages: [block1page1],
         key_forward: 32,
     };
 
-    return info;
-}());
+    p.inst.block2 = {
+        type: "instructions",
+        pages: [block2page1],
+        key_forward: 32,
+    };
 
-var taskBlocks = (function() {
+    p.inst.block3 = {
+        type: "instructions",
+        pages: [block3page1],
+        key_forward: 32,
+    };
 
-    var tasks = {};
+    /************
 
-    tasks.holeInOne = {
+        TASKS
+
+    ************/
+
+    p.tasks = {};
+
+    // parameterize "Hole in One"
+    p.tasks.holeInOne = {
         type: 'hole-in-one-game',
         stimulus: holeInOne.run,
-        total_shots: 10,  
+        total_shots: 20,  
         canvas_size: [475, 900],
         ball_color: 'white',
         ball_size: 10,
@@ -174,10 +104,11 @@ var taskBlocks = (function() {
         playing Hole in One. We'll let you know when time is up.</p></div>`
     };
 
-    tasks.slingshotGame = {
+    // parameterize "Target Practice"
+    p.tasks.slingshotGame = {
         type: 'slingshot-game',
         stimulus: slingshot.run,
-        total_shots: 10,  
+        total_shots: 52,  
         canvas_size: [475, 900],
         ball_color: 'white',
         ball_size: 10,
@@ -185,7 +116,7 @@ var taskBlocks = (function() {
         ball_yPos: .5,
         target_color: 'red',
         target_color_hit: 'green',
-        target_size: mutInfo == 1 ? 20 : 60,
+        target_size: mutInfo == 1 ? 20 : 80,
         target_xPos: .9,
         target_yPos: [.2, .4, .5, .6, .8],
         friction: .02,
@@ -197,24 +128,112 @@ var taskBlocks = (function() {
         playing Target Practice. We'll let you know when time is up.</p></div>`
     };
 
-    return tasks;
+    /****************
+
+        QUESTIONS
+
+    ****************/
+
+    p.Qs = {};
+
+    var fullNames = [gameNames.game1.full, gameNames.game2.full];
+    var shortNames = [gameNames.game1.short, gameNames.game2.short];
+    var zeroToExtremely = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
+    var zeroToALot = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+
+    p.Qs.flowComp = {
+        type: 'survey-text',
+        preamble: `<div class='instructions'>
+
+        <p>The feeling of being immersed and engaged in an activity is what psychologists call a "flow state." 
+        A flow state is commonly known as being "in the zone" or "hyper-focused." It is a feeling of intense, 
+        focused, and effortless concentration on what one is doing in the present moment. Someone in a flow state
+        is fully involved and completely absorbed in their current activity. 
+        Flow is the opposite or boredom; in a flow state, time seems to "fly by."</p>
+
+        <p>In the spaces below, briefly describe three activities that have made you experience flow in the past.</p>`,
+        questions: [
+            {prompt: "", placeholder: 'Activity #1', name: 'activity1', required: true}, 
+            {prompt: "", placeholder: 'Activity #2', name: 'activity2', required: true}, 
+            {prompt: "", placeholder: 'Activity #3', name: 'activity3', required: true}, 
+        ]
+    };
+
+    for (let i = 0; i < fullNames.length; i++) {
+        
+        p.Qs['flow_' + shortNames[i]] = {
+            type: 'survey-likert',
+            preamble: `<div class='qInfo'>
+
+            <p><strong>Thank you for playing ` + fullNames[i] + `!</strong></p>
+
+            <p>While playing ` + fullNames[i] + `, to what extent did you experience <strong>flow</strong>? 
+            Report the degree of <strong>flow</strong> you experienced by 
+            answering the following questions.</p></div>`,
+            questions: [
+                {prompt: 'During ' + fullNames[i] + ', to what extent did you feel absorbed in what you were doing?',
+                name: 'absorbed_' + shortNames[i],
+                labels: zeroToExtremely},
+                {prompt: 'During ' + fullNames[i] + ', to what extent did you feel immersed in what you were doing?',
+                name: 'immersed_' + shortNames[i],
+                labels: zeroToExtremely},
+                {prompt: 'During ' + fullNames[i] + ', to what extent did you feel engaged in what you were doing?',
+                name: 'engaged_' + shortNames[i],
+                labels: zeroToExtremely},
+                {prompt: 'During ' + fullNames[i] + ', to what extent did you feel engrossed in what you were doing?',
+                name: 'engrossed_' + shortNames[i],
+                labels: zeroToExtremely},
+            ],
+            randomize_question_order: false,
+            scale_width: 500
+        };
+
+        p.Qs['enjoyment_' + shortNames[i]] = {
+            type: 'survey-likert',
+            preamble: `<div class='qInfo'>
+
+            <p>Below are a few more questions about ` + fullNames[i] + `. Instead of asking about flow, 
+            these questions ask about <strong>enjoyment</strong>: how much did you <strong>enjoy</strong> 
+            playing ` + fullNames[i] + `?<br>Please answer each question, then continue.</p></div>`,
+            questions: [
+                {prompt: 'How much did you enjoy playing ' + fullNames[i] + '?',
+                name: 'enjoyable_' + shortNames[i],
+                labels: zeroToALot},
+                {prompt: 'How much did you like playing ' + fullNames[i] + '?',
+                name: 'like_' + shortNames[i],
+                labels: zeroToALot},
+                {prompt: 'How much did you dislike playing ' + fullNames[i] + '?',
+                name: 'dislike_' + shortNames[i],
+                labels: zeroToALot},
+                {prompt: 'How much fun did you have playing ' + fullNames[i] + '?',
+                name: 'fun_' + shortNames[i],
+                labels: zeroToALot},
+                {prompt: 'How entertaining was ' + fullNames[i] + '?',
+                name: 'entertaining_' + shortNames[i],
+                labels: zeroToExtremely},
+            ],
+            randomize_question_order: false,
+            scale_width: 500
+        };
+    };
+
+    return p;
 }());
 
-function makeTimeline(taskBlocks, infoBlocks, qBlocks) {
-
-    var timeline = [
-        infoBlocks.block1,
-        taskBlocks.holeInOne,
-        qBlocks.flow_hole,
-        qBlocks.enjoyment_hole,
-        taskBlocks.slingshotGame,
-        qBlocks.flow_sling,
-        qBlocks.enjoyment_sling];
-
-    return timeline;
-};
+var timeline = [
+    exp.inst.block1,
+    exp.Qs.flowComp,
+    exp.inst.block2,
+    exp.tasks.holeInOne,
+    exp.Qs.flow_hole,
+    exp.Qs.enjoyment_hole,
+    exp.inst.block3,
+    exp.tasks.slingshotGame,
+    exp.Qs.flow_sling,
+    exp.Qs.enjoyment_sling,
+];
 
 jsPsych.init({
-    timeline: makeTimeline(taskBlocks, infoBlocks, qBlocks),
-    on_finish: function() { jsPsych.data.displayData('json') }
+    timeline: timeline,
+    on_finish: function() { jsPsych.data.displayData('csv') }
 });

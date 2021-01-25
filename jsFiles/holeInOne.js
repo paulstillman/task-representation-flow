@@ -1,8 +1,8 @@
 /* 
- *  Slingshot Game
+ *  Hole in One
  *  David E. Melnikoff
  *
- *  A slingshot game compatible with jsPsych
+ *  A ball-shooting game compatible with jsPsych
  *
  */
 
