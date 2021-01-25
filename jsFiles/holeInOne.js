@@ -11,7 +11,7 @@ var holeInOne = (function () {
 	var game = {};
 
 	// import methods from matter.js and define physics engine
-	var { Engine, Render, Composite, World, Bodies, Events, Mouse, MouseConstraint } = Matter;
+	var { Engine, Render, Vertices, Composite, World, Bodies, Events, Mouse, MouseConstraint } = Matter;
 	var engine = Engine.create();
 
 	// temporary data
@@ -30,7 +30,6 @@ var holeInOne = (function () {
 		totalScore: 0		// total times getting the ball through the hole
 	};
 
-
 	// run slingshot game
 	game.run = function(c, trial) {
 
@@ -45,8 +44,8 @@ var holeInOne = (function () {
 			},
 			wall: {
 				x: trial.wall_xPos*c.width,
-				yTop: .25*(c.height-trial.hole_size),
-				yBottom: .75*c.height + .25*trial.hole_size,
+				yTop: (1/6)*(c.height-trial.hole_size),
+				yBottom: (5/6)*c.height + (1/6)*trial.hole_size,
 				width: trial.wall_width,
 				height: .5*(c.height-trial.hole_size),
 				col: trial.wall_color
@@ -86,8 +85,8 @@ var holeInOne = (function () {
 		};
 
 		// construct target
-		function Wall(y) {
-			this.body = Bodies.rectangle(set.wall.x, y, set.wall.width, set.wall.height, {
+		function Wall(y, tri) {
+			this.body = Bodies.fromVertices(set.wall.x, y, tri, {
 				isStatic: true,
 				render: {
 					fillStyle: set.wall.col,
@@ -222,11 +221,15 @@ var holeInOne = (function () {
 			})
 		}
 
+		// specify vertices for walls
+		var topWallVert = Vertices.fromPath(`0 0 0 ${set.wall.height} ${set.wall.width} 0`)
+		var bottomWallVert = Vertices.fromPath(`0 0 0 ${set.wall.height} ${set.wall.width} ${set.wall.height}`)
+
 		// construct bodies and mouse
 		var ball = new Ball().body;
 		var tracker = { ball: ball };
-		var topWall = new Wall(set.wall.yTop).body;
-		var bottomWall = new Wall(set.wall.yBottom).body;
+		var triWallTop = new Wall(set.wall.yTop, topWallVert).body;
+		var triWallBottom = new Wall(set.wall.yBottom, bottomWallVert).body;
 		var sling = new Sling().body;
 		makeMouse();
 

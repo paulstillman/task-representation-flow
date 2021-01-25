@@ -47,8 +47,7 @@ game.run = function(c, trial) {
 		target: {
 			x: trial.target_xPos*c.width, 
 			y: trial.target_yPos.map(y => { return y*c.height }), 
-			h: trial.target_size, 
-			w: trial.target_size, 
+			rad: trial.target_size, 
 			col: trial.target_color, 
 			colHit: trial.target_color_hit
 		},
@@ -88,7 +87,7 @@ game.run = function(c, trial) {
 
 	// construct target
 	function Target(loc) {
-		this.body = Bodies.rectangle(set.target.x, set.target.y[loc], set.target.h, set.target.w, {
+		this.body = Bodies.circle(set.target.x, set.target.y[loc], set.target.rad, {
 			isStatic: true,
 			render: {
 				fillStyle: set.target.col,
