@@ -34,48 +34,48 @@ var exp = (function() {
     that are as immersive and engaging as possible.</p>
 
     <p>To make it easier for you to provide feedback, we will explain exactly what we mean by
-    "immersive and engaging." To continue, press your SPACEBAR.</p></div>`; 
+    "immersive and engaging." To continue, press "Next".</p></div>`; 
 
     var block2page1 = `<div class='instructions'>
 
     <p>Next, you'll spend a few minutes playing a game called "Hole in One." After you finish, 
     you'll answer some questions about your experience. When you're ready, 
-    press your SPACEBAR to continue.</p></div>`; 
+    press "Next" to continue.</p></div>`; 
 
     var block3page1 = `<div class='instructions'>
 
     <p>Thank you! Next, you'll spend a few minutes playing a game called "Target Practice." After you finish, 
     you'll answer some questions about your experience. When you're ready, 
-    press your SPACEBAR to continue.</p></div>`; 
+    press "Next" to continue.</p></div>`; 
 
     var block4page1 = `<div class='instructions'>
 
     <p>Thank you! Next, you'll complete a brief demographics survey. When you're ready, 
-    press your SPACEBAR to continue.</p></div>`; 
+    press "Next" to continue.</p></div>`; 
 
     // combine pages into blocks
     p.inst.block1 = {
         type: "instructions",
         pages: [block1page1],
-        key_forward: 32,
+        show_clickable_nav: true,
     };
 
     p.inst.block2 = {
         type: "instructions",
         pages: [block2page1],
-        key_forward: 32,
+        show_clickable_nav: true,
     };
 
     p.inst.block3 = {
         type: "instructions",
         pages: [block3page1],
-        key_forward: 32,
+        show_clickable_nav: true,
     };
 
     p.inst.block4 = {
         type: "instructions",
         pages: [block4page1],
-        key_forward: 32,
+        show_clickable_nav: true,
     };
 
    /*
