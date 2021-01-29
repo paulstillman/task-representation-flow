@@ -283,6 +283,6 @@ jsPsych.init({
     timeline: timeline,
     on_finish: function() { 
             firebase.database().ref(firebase.auth().currentUser.uid).set({
-                data: jsPsych.data.get().values()
+                data: jsPsych.data.get().values()})
     }
 });
