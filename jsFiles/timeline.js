@@ -281,6 +281,7 @@ var timeline = [
 jsPsych.init({
     timeline: timeline,
     on_finish: function() { 
-        jsPsych.data.displayData('csv')
+            firebase.database().ref(firebase.auth().currentUser.uid).set({
+                data: jsPsych.data.get().values()})
     }
 });
