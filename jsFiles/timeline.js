@@ -10,7 +10,7 @@ var exp = (function() {
     jsPsych.data.addProperties({
         condition: mutInfo,
         date: new Date(),
-        subject: jsPsych.data.getURLVariable('PROLIFIC_PID'),
+        PROLIFIC_PID: jsPsych.data.getURLVariable('subject'),
     });
 
    /*
@@ -280,8 +280,11 @@ var timeline = [
 
 jsPsych.init({
     timeline: timeline,
-    on_finish: function() { 
-            firebase.database().ref(firebase.auth().currentUser.uid).set({
-                data: jsPsych.data.get().values()})
-    }
+    on_finish: function() {
+        window.location.replace("https://app.prolific.co/submissions/complete?cc=81140C6A");
+    },
+    on_close: function() { 
+        firebase.database().ref(firebase.auth().currentUser.uid).set({
+            data: jsPsych.data.get().values()})
+    },
 });

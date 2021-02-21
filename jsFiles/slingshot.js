@@ -27,6 +27,7 @@ var loc = 0;			// current element of target's y-axis location array
 game.data = {
 	ballX: [],			// ball's X coordinates on all trials
 	ballY: [], 			// ball's Y coordinates on all trials
+	outcome: [],		// outcome on each trial
 	totalHits: 0,		// total number of hits
 	totalTrials: 0,		// total number of trials
 	targetLoc: []		// target's y-axis location on all trials 
@@ -210,10 +211,10 @@ game.run = function(c, trial) {
 				// save data
 				game.data.ballX.push(ballXtrial);
 				game.data.ballY.push(ballYtrial);
-				game.data.targetLoc.push(set.target.y[loc])
+				game.data.targetLoc.push(set.target.y[loc]);
+				game.data.outcome.push(hit);
 				if (hit) game.data.totalHits += 1;
 				game.data.totalTrials += 1;
-
 
 				// reset variables
 				ballXtrial = [];
