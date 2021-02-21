@@ -9,8 +9,8 @@ var exp = (function() {
 
     jsPsych.data.addProperties({
         condition: mutInfo,
-        startDate: jsPsych.data.getURLVariable('date'),
-        startTime: jsPsych.data.getURLVariable('time'),
+        date: new Date(),
+        subject: jsPsych.data.getURLVariable('PROLIFIC_PID'),
     });
 
    /*
@@ -155,16 +155,16 @@ var exp = (function() {
         answering the following questions.</p></div>`;
         this.questions = [
             {prompt: 'During ' + fullName + ', to what extent did you feel absorbed in what you were doing?',
-            name: 'absorbed_' + shortName,
+            name: 'F_absorbed_' + shortName,
             labels: zeroToExtremely},
             {prompt: 'During ' + fullName + ', to what extent did you feel immersed in what you were doing?',
-            name: 'immersed_' + shortName,
+            name: 'F_immersed_' + shortName,
             labels: zeroToExtremely},
             {prompt: 'During ' + fullName + ', to what extent did you feel engaged in what you were doing?',
-            name: 'engaged_' + shortName,
+            name: 'F_engaged_' + shortName,
             labels: zeroToExtremely},
             {prompt: 'During ' + fullName + ', to what extent did you feel engrossed in what you were doing?',
-            name: 'engrossed_' + shortName,
+            name: 'F_engrossed_' + shortName,
             labels: zeroToExtremely},
         ];
         this.randomize_question_order = false;
@@ -180,19 +180,19 @@ var exp = (function() {
         playing ` + fullName + `<br>by answering the following questions.</p></div>`;
         this.questions = [
             {prompt: 'How much did you enjoy playing ' + fullName + '?',
-            name: 'enjoyable_' + shortName,
+            name: 'E_enjoyable_' + shortName,
             labels: zeroToALot},
             {prompt: 'How much did you like playing ' + fullName + '?',
-            name: 'like_' + shortName,
+            name: 'E_like_' + shortName,
             labels: zeroToALot},
             {prompt: 'How much did you dislike playing ' + fullName + '?',
-            name: 'dislike_' + shortName,
+            name: 'E_dislike_' + shortName,
             labels: zeroToALot},
             {prompt: 'How much fun did you have playing ' + fullName + '?',
-            name: 'fun_' + shortName,
+            name: 'E_fun_' + shortName,
             labels: zeroToALot},
             {prompt: 'How entertaining was ' + fullName + '?',
-            name: 'entertaining_' + shortName,
+            name: 'E_entertaining_' + shortName,
             labels: zeroToExtremely},
         ];
         this.randomize_question_order = false;
@@ -202,20 +202,19 @@ var exp = (function() {
     p.Qs = {};
 
     p.Qs.flowComp = {
-        type: 'survey-text',
+        type: 'survey-multi-choice',
         preamble: `<div class='instructions'>
 
         <p>The feeling of being immersed and engaged in an activity is what psychologists call a "flow state." 
         A flow state is commonly known as being "in the zone" or "hyperfocused." It is a feeling of intense, 
         focused, and effortless concentration on what one is doing in the present moment. Someone in a flow state
         is fully involved and completely absorbed in their current activity. 
-        Flow is the opposite or boredom; in a flow state, time seems to "fly by."</p>
-
-        <p>In the spaces below, briefly describe three activities that have made you experience flow in the past.</p>`,
+        Flow is the opposite or boredom; in a flow state, time seems to "fly by."</p>`,
         questions: [
-            {prompt: "", placeholder: 'Activity #1', name: 'activity1', required: true}, 
-            {prompt: "", placeholder: 'Activity #2', name: 'activity2', required: true}, 
-            {prompt: "", placeholder: 'Activity #3', name: 'activity3', required: true}, 
+            {prompt: "Which of the folling statements is true?", name: 'attnChk', required: true, options: [
+            "Flow is a feeling of intense anxiety and stress.", 
+            "Flow is a feeling of boredom", 
+            "Flow is a feeling of intense, focused, and effortless concentration"]}, 
         ]
     };
 
