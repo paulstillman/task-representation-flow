@@ -211,7 +211,7 @@ var exp = (function() {
         is fully involved and completely absorbed in their current activity. 
         Flow is the opposite or boredom; in a flow state, time seems to "fly by."</p>`,
         questions: [
-            {prompt: "Which of the folling statements is true?", name: 'attnChk', required: true, options: [
+            {prompt: "Which of the following statements is true?", name: 'attnChk', required: true, options: [
             "Flow is a feeling of intense anxiety and stress.", 
             "Flow is a feeling of boredom", 
             "Flow is a feeling of intense, focused, and effortless concentration"]}, 
