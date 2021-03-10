@@ -15,8 +15,8 @@ var holeInOne = (function () {
 	var engine = Engine.create();
 
 	// temporary data
-	var ballXtrial = []; 	// ball's X coordinates on current trial
-	var ballYtrial = []; 	// ball's Y coordinate on current trial
+	var ballXtrial = [0]; 	// ball's X coordinates on current trial
+	var ballYtrial = [0]; 	// ball's Y coordinate on current trial
 	var	endTrial = false;	// flag whether the current trial is complete
 	var	firing = false;		// flag whether the slingshot was fired
 	var inTheHole = false;  // flag whether the ball went through the hold
@@ -178,7 +178,7 @@ var holeInOne = (function () {
 			Events.on(engine, "beforeUpdate", function() {
 				var xLoc = tracker.ball.position.x;
 				var yLoc = tracker.ball.position.y;
-				var xLimR = set.canvas.width;
+				var xLimR = set.canvas.width*1.5;
 				var xLimL = set.ball.x;
 				var yLim = set.canvas.height;
 				if (xLoc>xLimL && xLoc<xLimR && yLoc<yLim) {
@@ -207,8 +207,8 @@ var holeInOne = (function () {
 					if (inTheHole) game.data.totalScore++;
 
 					// reset variables
-					ballXtrial = [];
-					ballYtrial = [];
+					ballXtrial = [0];
+					ballYtrial = [0];
 					endTrial = true;
 					inTheHole = false;
 

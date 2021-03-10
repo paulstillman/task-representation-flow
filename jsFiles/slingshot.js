@@ -15,8 +15,8 @@ var { Engine, Render, Composite, World, Bodies, Events, Mouse, MouseConstraint }
 var engine = Engine.create();
 
 // temporary data
-var ballXtrial = []; 	// ball's X coordinates on current trial
-var ballYtrial = []; 	// ball's Y coordinate on current trial
+var ballXtrial = [0]; 	// ball's X coordinates on current trial
+var ballYtrial = [0]; 	// ball's Y coordinate on current trial
 var	hit = false;		// flag whether hit occurred on current trial
 var	endTrial = false;	// flag whether the current trial is complete
 var	firing = false;		// flag whether the slingshot was fired
@@ -181,7 +181,7 @@ game.run = function(c, trial) {
 		Events.on(engine, "beforeUpdate", function() {
 			var xLoc = tracker.ball.position.x;
 			var yLoc = tracker.ball.position.y;
-			var xLimR = set.canvas.width;
+			var xLimR = set.canvas.width*1.5;
 			var xLimL = set.ball.x;
 			var yLim = set.canvas.height;
 			if (xLoc>xLimL && xLoc<xLimR && yLoc<yLim) {
@@ -217,8 +217,8 @@ game.run = function(c, trial) {
 				game.data.totalTrials += 1;
 
 				// reset variables
-				ballXtrial = [];
-				ballYtrial = [];
+				ballXtrial = [0];
+				ballYtrial = [0];
 				hit = false;
 				endTrial = true;
 
