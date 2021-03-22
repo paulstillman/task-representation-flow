@@ -281,7 +281,7 @@ var timeline = [
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
-        window.location.replace("https://app.prolific.co/submissions/complete?cc=81140C6A");
+        window.location.replace("https://app.prolific.co/submissions/complete?cc=865BE374");
     },
     on_close: function() { 
         firebase.database().ref(firebase.auth().currentUser.uid).set({
