@@ -281,10 +281,9 @@ var timeline = [
 jsPsych.init({
     timeline: timeline,
     on_finish: function() {
-        window.location.replace("https://app.prolific.co/submissions/complete?cc=865BE374");
-    },
-    on_close: function() { 
         firebase.database().ref(firebase.auth().currentUser.uid).set({
-            data: jsPsych.data.get().values()})
+            data: jsPsych.data.get().values()}).then(function() {
+            window.location.replace("https://app.prolific.co/submissions/complete?cc=865BE374")
+        });
     },
 });
