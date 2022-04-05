@@ -152,8 +152,8 @@ var exp = (function() {
     */
 
     // scales
-    var zeroToExtremely = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>Extremely'];
-    var zeroToALot = ['0<br>Not<br>at all', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
+    var zeroToExtremely = ['0<br>A little', '1', '2', '3', '4<br>Very', '5', '6', '7', '8<br>Completely'];
+    var zeroToALot = ['0<br>A little', '1', '2', '3', '4', '5', '6', '7', '8<br>A lot'];
 
     // constructor functions
     var flowQs = function(shortName, fullName) {
@@ -165,18 +165,18 @@ var exp = (function() {
         <p>During ` + fullName + `, to what extent did you feel immersed and engaged in what you were doing?<br>
         Report how immersed and engaged you felt by answering the following questions.</p></div>`;
         this.questions = [
-            {prompt: 'During ' + fullName + ', to what extent did you feel absorbed in what you were doing?',
+            {prompt: 'During ' + fullName + ', how absorbed did you feel in what you were doing?',
             name: 'F_absorbed_' + shortName,
-            labels: zeroToExtremely},
-            {prompt: 'During ' + fullName + ', to what extent did you feel immersed in what you were doing?',
+            labels: ['0<br>A little<br>absorbed', '1', '2', '3', '4<br>Very<br>absorbed', '5', '6', '7', '8<br>Completely<br>absorbed']},
+            {prompt: 'During ' + fullName + ', how immersed did you feel in what you were doing?',
             name: 'F_immersed_' + shortName,
-            labels: zeroToExtremely},
-            {prompt: 'During ' + fullName + ', to what extent did you feel engaged in what you were doing?',
+            labels: ['0<br>A little<br>immersed', '1', '2', '3', '4<br>Very<br>immersed', '5', '6', '7', '8<br>Completely<br>immersed']},
+            {prompt: 'During ' + fullName + ', how engaged did you feel in what you were doing?',
             name: 'F_engaged_' + shortName,
-            labels: zeroToExtremely},
-            {prompt: 'During ' + fullName + ', to what extent did you feel engrossed in what you were doing?',
+            labels: ['0<br>A little<br>engaged', '1', '2', '3', '4<br>Very<br>engaged', '5', '6', '7', '8<br>Completely<br>engaged']},
+            {prompt: 'During ' + fullName + ', how engrossed did you feel in what you were doing?',
             name: 'F_engrossed_' + shortName,
-            labels: zeroToExtremely},
+            labels: ['0<br>A little<br>engrossed', '1', '2', '3', '4<br>Very<br>engrossed', '5', '6', '7', '8<br>Completely<br>engrossed']},
         ];
         this.randomize_question_order = false;
         this.scale_width = 500;
@@ -192,19 +192,19 @@ var exp = (function() {
         this.questions = [
             {prompt: 'How much did you enjoy playing ' + fullName + '?',
             name: 'E_enjoyable_' + shortName,
-            labels: zeroToALot},
+            labels: ['0<br>A little', '1', '2', '3', '4<br>Moderately', '5', '6', '7', '8<br>A lot']},
             {prompt: 'How much did you like playing ' + fullName + '?',
             name: 'E_like_' + shortName,
-            labels: zeroToALot},
+            labels: ['0<br>A little', '1', '2', '3', '4<br>Moderately', '5', '6', '7', '8<br>A lot']},
             {prompt: 'How much did you dislike playing ' + fullName + '?',
             name: 'E_dislike_' + shortName,
-            labels: zeroToALot},
+            labels: ['0<br>A little', '1', '2', '3', '4<br>Moderately', '5', '6', '7', '8<br>A lot']},
             {prompt: 'How much fun did you have playing ' + fullName + '?',
             name: 'E_fun_' + shortName,
-            labels: zeroToALot},
+            labels: ['0<br>A little', '1', '2', '3', '4<br>Moderately', '5', '6', '7', '8<br>A lot']},
             {prompt: 'How entertaining was ' + fullName + '?',
             name: 'E_entertaining_' + shortName,
-            labels: zeroToExtremely},
+            labels: ['0<br>A little', '1', '2', '3', '4<br>Very', '5', '6', '7', '8<br>Extremely']},
         ];
         this.randomize_question_order = false;
         this.scale_width = 500;
