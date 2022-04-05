@@ -130,8 +130,8 @@ var holeInOne = (function () {
 			if (game.data.totalTrials == 0 && intro <= 2) {
 				c.font = "16px Arial";
 		        c.fillStyle = "white";
-				c.fillText("Step 1: Click and hold the ball, then pull the ball to the left to draw your sling.", 75, 100);
-				c.fillText("Keep your cursor in the play area while holding the ball.", 75, 120);
+				c.fillText("Step 1: Click and hold the ball. Keeping your cursor in the play area,", 75, 100);
+				c.fillText("pull the ball to the left to draw your sling.", 75, 120);
 		    }
 
 		    if (game.data.totalTrials == 0 && intro > 0 && intro <= 2) {
