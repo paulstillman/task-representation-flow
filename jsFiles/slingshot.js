@@ -15,18 +15,26 @@ var { Engine, Render, Composite, World, Bodies, Events, Mouse, MouseConstraint }
 var engine = Engine.create();
 
 // temporary data
-var ballXtrial = [0]; 	// ball's X coordinates on current trial
-var ballYtrial = [0]; 	// ball's Y coordinate on current trial
-var	hit = false;		// flag whether hit occurred on current trial
-var	endTrial = false;	// flag whether the current trial is complete
-var	firing = false;		// flag whether the slingshot was fired
-var intro = 0;  	    // use to determine which instructions to display during introduction
-var loc = 0;			// current element of target's y-axis location array  
+var ballXtrial = []; 	 // ball's X coordinates on current trial
+var ballYtrial = []; 	 // ball's Y coordinates on current trial
+var distTrial = [];      // distance from target on current trial
+var	hit = false;		 // flag whether hit occurred on current trial
+var hitFilter = [false]; // filter out repeat hits
+var	endTrial = false;	 // flag whether the current trial is complete
+var	firing = false;		 // flag whether the slingshot was fired
+var record = false;      // flag whether to record data
+var intro = 0;  	     // use to determine which instructions to display during introduction
+var loc = 0;			 // current element of target's y-axis location array  
+var streak = 0;			 // length of current streak
+var missMssg = null      // message to display after miss in non-streak condition
 
 // data to save
 game.data = {
 	ballX: [],			// ball's X coordinates on all trials
 	ballY: [], 			// ball's Y coordinates on all trials
+	dist: [],           // ball's distance from target on all trials
+	minDist: [],        // ball's minimum distance from target
+	minDistMM: [],      // ball's minimum distance from target in millimeters
 	outcome: [],		// outcome on each trial
 	totalHits: 0,		// total number of hits
 	totalTrials: 0,		// total number of trials
@@ -34,7 +42,7 @@ game.data = {
 };
 
 // run slingshot game
-game.run = function(c, trial) {
+game.run = function(c, trial, mmPerPx) {
 
 	// import settings
 	var set = {
@@ -52,6 +60,9 @@ game.run = function(c, trial) {
 			col: trial.target_color, 
 			colHit: trial.target_color_hit
 		},
+		frame: {
+			streak: trial.game_type,
+		},
 		sling: {
 			stiffness: trial.tension,
 			x: trial.ball_xPos*c.width,
@@ -62,6 +73,9 @@ game.run = function(c, trial) {
 			width: c.width
 		}
 	};
+
+	var goalMssg = set.frame.streak ? "Hit the target as many times is a row as possible" : "Shoot the ball as close to the target as possible"
+
 
 	// create renderer
 	var render = Render.create({ 
@@ -126,14 +140,14 @@ game.run = function(c, trial) {
 		if (intro <= 3) {
 			c.font = "bold 20px Arial";
 	        c.fillStyle = 'red';
-			c.fillText("Goal: Hit the red circle.", 75, 60);
+			c.fillText(goalMssg, 75, 60);
 	    }
 
 		if (game.data.totalTrials == 0 && intro <= 2) {
 			c.font = "16px Arial";
 	        c.fillStyle = "white";
-			c.fillText("Step 1: Click and hold the ball,", 75, 100);
-			c.fillText("then pull the ball to the left to draw your sling.", 75, 120);
+			c.fillText("Step 1: Click and hold the ball, then pull the ball to the left to draw your sling.", 75, 100);
+			c.fillText("Keep your cursor in the play area while holding the ball.", 75, 120);
 	    }
 
 	    if (game.data.totalTrials == 0 && intro > 0 && intro <= 2) {
@@ -150,6 +164,40 @@ game.run = function(c, trial) {
 			c.fillText("minutes playing Target Practice. We'll let", 75, 120);
 			c.fillText("you know when time is up.", 75, 140);
 		}
+
+		if (game.data.totalTrials == 1 && intro > 1 && intro <= 3) {
+			c.font = "16px Arial";
+	        c.fillStyle = "white";
+			c.fillText("Good job! Please spend the next few", 75, 100);
+			c.fillText("minutes playing Target Practice. We'll let", 75, 120);
+			c.fillText("you know when time is up.", 75, 140);
+		}
+
+		if (set.frame.streak) {
+			if (streak == 0 & length > 0 & endTrial) {
+		    	c.font = "30px Arial";
+	        	c.fillStyle = "white";
+				c.fillText(`Your streak was:`, 330, 220);
+				c.fillText(`${length}`, 425, 270);
+			} else if (streak > 0 & hit | streak > 0 & endTrial | streak == 0 & length == 0 & endTrial) {
+		    	c.font = "30px Arial";
+	        	c.fillStyle = "white";
+				c.fillText(`Current hit streak:`, 315, 220);
+				c.fillText(`${streak}`, 420, 270);
+			}
+		} 
+		else {
+			if (streak == 0 & endTrial) {
+		    	c.font = "35px Arial";
+	        	c.fillStyle = "white";
+	        	c.fillText("You missed by:", 310, 220);
+	        	c.fillText(missMssg, 380, 270);
+			} else if (streak > 0 & hit | streak > 0 & endTrial) {
+		    	c.font = "35px Arial";
+	        	c.fillStyle = "white";
+				c.fillText(`Hit!`, 400, 245);
+			}
+		}
     };
 
 	// shoot sling
@@ -161,7 +209,10 @@ game.run = function(c, trial) {
 			intro ++;
 		});
 		Events.on(mouseConstraint, 'enddrag', function(e) {
-			if(e.body === ball) firing = true;
+			if(e.body === ball) {
+				firing = true;
+				record = true;
+			}
 		});
 		Events.on(engine, 'beforeUpdate', function() {
 			var xDelta = Math.abs(ball.position.x-set.ball.x);
@@ -181,13 +232,32 @@ game.run = function(c, trial) {
 		Events.on(engine, "beforeUpdate", function() {
 			var xLoc = tracker.ball.position.x;
 			var yLoc = tracker.ball.position.y;
-			var xLimR = set.canvas.width*1.5;
-			var xLimL = set.ball.x;
-			var yLim = set.canvas.height;
-			if (xLoc>xLimL && xLoc<xLimR && yLoc<yLim) {
+			// var xLimR = set.canvas.width*1.5;
+			// var xLimL = set.ball.x;
+			// var yLim = set.canvas.height;
+			if (record) {
 				ballXtrial.push(xLoc);
 				ballYtrial.push(yLoc);
+				distTrial.push(Math.hypot(xLoc - set.target.x, yLoc - set.target.y[loc]) - (set.ball.rad + set.target.rad));
+/*				if (ballXtrial.length > 1) {
+					var dxRaw = xLoc - ballXtrial[ballXtrial.length - 2];
+					var dyRaw = yLoc - ballYtrial[ballYtrial.length - 2];
+					var dx = (dxRaw > 0) ? Math.floor(dxRaw) : Math.ceil(dxRaw);
+					var dy = (dyRaw > 0) ? Math.floor(dyRaw) : Math.ceil(dyRaw);
+					var xFlip = 0 > (dx * dxTrial[dxTrial.length-1]) | dx == 0 & dxTrial[dxTrial.length-1] != 0 | dx != 0 & dxTrial[dxTrial.length-1] == 0
+					var yFlip = 0 > (dy * dyTrial[dyTrial.length-1]) | dx == 0 & dxTrial[dxTrial.length-1] != 0 | dx != 0 & dxTrial[dxTrial.length-1] == 0
+					dxTrial.push(dx);
+					dyTrial.push(dy);
+					xFlipTrial.push(xFlip);
+					yFlipTrial.push(yFlip);
+					console.log(yFlip, dy);
+				}*/
 			}
+/*			if (xLoc>xLimL && xLoc<xLimR && yLoc<yLim) {
+				ballXtrial.push(xLoc);
+				ballYtrial.push(yLoc);
+				distTrial.push(Math.hypot(xLoc - set.target.x, yLoc - set.target.y[loc]) - (set.ball.rad + set.target.rad));
+			}*/
 		});
 	}
 
@@ -196,6 +266,11 @@ game.run = function(c, trial) {
 		Events.on(engine, 'collisionStart', function(event) {
 		    target.render.fillStyle = set.target.colHit;
 		    hit = true;
+		    hitFilter.push(hit);
+			if (hitFilter[hitFilter.length-1] != hitFilter[hitFilter.length-2]) {
+				game.data.totalHits++;
+				streak++;
+			} 
 		});
 	}
 
@@ -208,18 +283,34 @@ game.run = function(c, trial) {
 			var yLim = set.canvas.height;
 			if(!endTrial && yLoc>(yLim*2) || !endTrial && xLoc>(xLim*2)) {
 
+				// stop recording data
+				record = false;
+
+				// minimum distance
+				minDistTrial = Math.min.apply(null, distTrial);
+				minDistTrialMM = Math.floor(minDistTrial/mmPerPx);
+				missMssg = (minDistTrialMM > 1) ? `${minDistTrialMM}mm` : `1mm`;
+
 				// save data
 				game.data.ballX.push(ballXtrial);
 				game.data.ballY.push(ballYtrial);
+				game.data.dist.push(distTrial);
+				game.data.minDist.push(minDistTrial);
+				game.data.minDistMM.push(minDistTrialMM);
 				game.data.targetLoc.push(set.target.y[loc]);
 				game.data.outcome.push(hit);
-				if (hit) game.data.totalHits += 1;
-				game.data.totalTrials += 1;
+				game.data.totalTrials++;
+				if (!hit) {
+					length = streak;
+					streak = 0;
+				};
 
 				// reset variables
-				ballXtrial = [0];
-				ballYtrial = [0];
+				ballXtrial = [];
+				ballYtrial = [];
+				distTrial = [];
 				hit = false;
+				hitFilter.push(hit);
 				endTrial = true;
 
 				// replace ball

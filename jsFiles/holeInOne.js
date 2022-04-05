@@ -124,14 +124,14 @@ var holeInOne = (function () {
 			if (intro <= 3) {
 				c.font = "bold 20px Arial";
 		        c.fillStyle = 'red';
-				c.fillText("Goal: Shoot the ball through the hole.", 75, 60);
+				c.fillText("Shoot the ball through the hole.", 75, 60);
 		    }
 
 			if (game.data.totalTrials == 0 && intro <= 2) {
 				c.font = "16px Arial";
 		        c.fillStyle = "white";
-				c.fillText("Step 1: Click and hold the ball,", 75, 100);
-				c.fillText("then pull the ball to the left to draw your sling.", 75, 120);
+				c.fillText("Step 1: Click and hold the ball, then pull the ball to the left to draw your sling.", 75, 100);
+				c.fillText("Keep your cursor in the play area while holding the ball.", 75, 120);
 		    }
 
 		    if (game.data.totalTrials == 0 && intro > 0 && intro <= 2) {

@@ -5,10 +5,27 @@ var exp = (function() {
     var p = {};
 
     // save condition, date, and time
-    var mutInfo = Math.floor(Math.random()*2);
+    var targetSize = Math.floor(Math.random()*2);
+    var streak = Math.floor(Math.random()*2);
+    if (streak) {
+        var inst = `<div class='instructions'>
+
+        <p><strong>Target Practice</strong>. The goal of Target Practice is to hit the target
+        as many times in a row as possible. For each consecutive hit, your current "hit streak" will
+        increase by 1. Try your best to make your hit streaks as long as possible! Follow the instructions in the game area, then 
+        play Target Practice. We'll let you know when time is up.</p></div>`
+    } else {
+        var inst = `<div class='instructions'>
+
+        <p><strong>Target Practice</strong>. The goal of Target Practice is to shoot the ball
+        as close to the target as possible. After each shot, you'll see how close the 
+        ball came to the target. Try your best to get as close to the target as possible! 
+        Follow the instructions in the game area, then play Target Practice. We'll let you know when time is up.</p></div>`
+    }
 
     jsPsych.data.addProperties({
-        condition: mutInfo,
+        targetSize: targetSize,
+        streak: streak,
         date: new Date(),
         PROLIFIC_PID: jsPsych.data.getURLVariable('subject'),
     });
@@ -24,9 +41,7 @@ var exp = (function() {
     // instruction pages
     var block1page1 = `<div class='instructions'>
 
-    <p><strong>Welcome!</strong></p>
-
-    <p>Thank you for agreeing to complete our survey. For the next 10 to 15 minutes, you'll be helping us 
+    <p>For the next 10 to 15 minutes, you'll be helping us 
     answer the following question: "What makes some games more immersive and engaging than others?"</p>
 
     <p>Specifically, you'll play two games and provide feedback about each one. 
@@ -90,7 +105,7 @@ var exp = (function() {
     p.tasks.holeInOne = {
         type: 'hole-in-one-game',
         stimulus: holeInOne.run,
-        total_shots: 32,  
+        total_shots: 17,  
         canvas_size: [475, 900],
         ball_color: 'white',
         ball_size: 10,
@@ -105,15 +120,15 @@ var exp = (function() {
         prompt: `<div class='instructions'>
 
         <p><strong>Hole in One</strong>. The goal of Hole in One is to shoot the ball through the hole. 
-        Follow the instructions in the game area, then spend the next few minutes 
-        playing Hole in One. We'll let you know when time is up.</p></div>`
+        Follow the instructions in the game area, then play Hole in One. 
+        We'll let you know when time is up.</p></div>`
     };
 
     // parameterize "Target Practice"
     p.tasks.slingshotGame = {
         type: 'slingshot-game',
         stimulus: slingshot.run,
-        total_shots: 52,  
+        total_shots: 32,  
         canvas_size: [475, 900],
         ball_color: 'white',
         ball_size: 10,
@@ -121,16 +136,13 @@ var exp = (function() {
         ball_yPos: .5,
         target_color: 'red',
         target_color_hit: 'green',
-        target_size: mutInfo == 1 ? 10 : 40,
+        target_size: targetSize == 1 ? 45 : 10,
+        game_type: streak,
         target_xPos: .9,
         target_yPos: [.2, .4, .5, .6, .8],
         friction: .02,
         tension: .03,
-        prompt: `<div class='instructions'>
-
-        <p><strong>Target Practice</strong>. The goal of Target Practice is to hit the red circle. 
-        Follow the instructions in the game area, then spend the next few minutes 
-        playing Target Practice. We'll let you know when time is up.</p></div>`
+        prompt: inst,
     };
 
    /*
@@ -150,9 +162,8 @@ var exp = (function() {
 
         <p><strong>Thank you for playing ` + fullName + `!</strong></p>
 
-        <p>While playing ` + fullName + `, to what extent did you experience <strong>flow</strong>? 
-        Report the degree of <strong>flow</strong> you experienced by 
-        answering the following questions.</p></div>`;
+        <p>During ` + fullName + `, to what extent did you feel immersed and engaged in what you were doing?<br>
+        Report how immersed and engaged you felt by answering the following questions.</p></div>`;
         this.questions = [
             {prompt: 'During ' + fullName + ', to what extent did you feel absorbed in what you were doing?',
             name: 'F_absorbed_' + shortName,
@@ -175,9 +186,9 @@ var exp = (function() {
         this.type = 'survey-likert';
         this.preamble = `<div class='qInfo'>
 
-        <p>Below are a few more questions about ` + fullName + `. Instead of asking about flow, 
-        these questions ask about <strong>enjoyment</strong>. Report how much you <strong>enjoyed</strong> 
-        playing ` + fullName + `<br>by answering the following questions.</p></div>`;
+        <p>Below are a few more questions about ` + fullName + `.</p><p>Instead of asking about immersion and engagement, 
+        these questions ask about <strong>enjoyment</strong>.<br>Report how much you <strong>enjoyed</strong> 
+        playing ` + fullName + ` by answering the following questions.</p></div>`;
         this.questions = [
             {prompt: 'How much did you enjoy playing ' + fullName + '?',
             name: 'E_enjoyable_' + shortName,
@@ -204,17 +215,16 @@ var exp = (function() {
     p.Qs.flowComp = {
         type: 'survey-multi-choice',
         preamble: `<div class='instructions'>
-
-        <p>The feeling of being immersed and engaged in an activity is what psychologists call a "flow state." 
-        A flow state is commonly known as being "in the zone" or "hyperfocused." It is a feeling of intense, 
-        focused, and effortless concentration on what one is doing in the present moment. Someone in a flow state
-        is fully involved and completely absorbed in their current activity. 
-        Flow is the opposite or boredom; in a flow state, time seems to "fly by."</p>`,
+        <p><strong>Welcome!</strong></p>
+        <p>Before you begin this survey, please note the following:</p>
+        <p>Unlike some surveys on Prolific, we NEVER deny payment based on performance
+        or answers to questions. We simply ask that you try your best, and answer 
+        each question as honestly and accurately as possible. No matter what answers you give or how
+        you perform, you will be fully compensated. That is a guarantee.</p>
+        <p>To ensure that you understand this information, please answer the following question.</p></div>`,
         questions: [
-            {prompt: "Which of the following statements is true?", name: 'attnChk', required: true, options: [
-            "Flow is a feeling of intense anxiety and stress.", 
-            "Flow is a feeling of boredom", 
-            "Flow is a feeling of intense, focused, and effortless concentration"]}, 
+            {prompt: "Will you receive full payment regardless of how you perform and answer questions?", name: 'attnChk', required: true, 
+            options: ["Yes", "No"]}, 
         ]
     };
 
@@ -266,8 +276,8 @@ var exp = (function() {
 }());
   
 var timeline = [
-    exp.inst.block1,
     exp.Qs.flowComp,
+    exp.inst.block1,
     exp.inst.block2,
     exp.tasks.holeInOne,
     exp.Qs.hole,

@@ -102,6 +102,12 @@ jsPsych.plugins["slingshot-game"] = (function () {
         default: 20,
         description: 'Target length and width in pixels.'
       },
+      game_type: {
+        type: jsPsych.plugins.parameterType.INT,
+        pretty_name: 'Game type',
+        default: 1,
+        description: 'Streak (game_type = 1) or non-streak (game_type = 0).'
+      },
       friction: {
         type: jsPsych.plugins.parameterType.FLOAT,
         pretty_name: 'Air friction',
@@ -119,7 +125,7 @@ jsPsych.plugins["slingshot-game"] = (function () {
 
   plugin.trial = function (display_element, trial) {
 
-    var new_html = '<div id="jspsych-canvas-keyboard-response-stimulus">' + '<canvas id="jspsych-canvas-stimulus" height="' + trial.canvas_size[0] + '" width="' + trial.canvas_size[1] + '"></canvas>' + '</div>';
+    var new_html = '<div id="jspsych-canvas-keyboard-response-stimulus">' + '<canvas id="jspsych-canvas-stimulus" height="' + trial.canvas_size[0] + '" width="' + trial.canvas_size[1] + '"></canvas>' + '<div id="my_mm" style="height:100mm;display:none"></div>' + '</div>';
     
     // add prompt
     if (trial.prompt !== null) {
@@ -128,8 +134,10 @@ jsPsych.plugins["slingshot-game"] = (function () {
 
     // draw
     display_element.innerHTML = new_html;
-    let c = document.getElementById("jspsych-canvas-stimulus")
-    trial.stimulus(c, trial)
+    let c = document.getElementById("jspsych-canvas-stimulus");
+    let mmPerPx = $('#my_mm').height()/100;
+    console.log(mmPerPx);
+    trial.stimulus(c, trial, mmPerPx)
 
     // function to end trial when it is time
     var end_trial = function () {
@@ -153,6 +161,9 @@ jsPsych.plugins["slingshot-game"] = (function () {
         "xLocBall": slingshot.data.ballX,
         "yLocBall": slingshot.data.ballY,
         "yLocTarget": slingshot.data.targetLoc,
+        "distance": slingshot.data.dist,
+        "minDistance": slingshot.data.minDist,
+        "minDistanceMM": slingshot.data.minDistMM
       };
 
       // clear the display
