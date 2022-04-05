@@ -190,7 +190,7 @@ game.run = function(c, trial, mmPerPx) {
 			if (streak == 0 & endTrial) {
 		    	c.font = "35px Arial";
 	        	c.fillStyle = "white";
-	        	c.fillText("You missed by:", 310, 220);
+	        	c.fillText("Distance from target:", 270, 220);
 	        	c.fillText(missMssg, 380, 270);
 			} else if (streak > 0 & hit | streak > 0 & endTrial) {
 		    	c.font = "35px Arial";
