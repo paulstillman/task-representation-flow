@@ -167,16 +167,16 @@ var exp = (function() {
         this.questions = [
             {prompt: 'During ' + fullName + ', how absorbed did you feel in what you were doing?',
             name: 'F_absorbed_' + shortName,
-            labels: ['0<br>A little<br>absorbed', '1', '2', '3', '4<br>Very<br>absorbed', '5', '6', '7', '8<br>Completely<br>absorbed']},
+            labels: ['0<br>A little<br>absorbed', '1', '2', '3', '4<br>Quite<br>absorbed', '5', '6', '7', '8<br>Maximally<br>absorbed']},
             {prompt: 'During ' + fullName + ', how immersed did you feel in what you were doing?',
             name: 'F_immersed_' + shortName,
-            labels: ['0<br>A little<br>immersed', '1', '2', '3', '4<br>Very<br>immersed', '5', '6', '7', '8<br>Completely<br>immersed']},
+            labels: ['0<br>A little<br>immersed', '1', '2', '3', '4<br>Quite<br>immersed', '5', '6', '7', '8<br>Maximally<br>immersed']},
             {prompt: 'During ' + fullName + ', how engaged did you feel in what you were doing?',
             name: 'F_engaged_' + shortName,
-            labels: ['0<br>A little<br>engaged', '1', '2', '3', '4<br>Very<br>engaged', '5', '6', '7', '8<br>Completely<br>engaged']},
+            labels: ['0<br>A little<br>engaged', '1', '2', '3', '4<br>Quite<br>engaged', '5', '6', '7', '8<br>Maximally<br>engaged']},
             {prompt: 'During ' + fullName + ', how engrossed did you feel in what you were doing?',
             name: 'F_engrossed_' + shortName,
-            labels: ['0<br>A little<br>engrossed', '1', '2', '3', '4<br>Very<br>engrossed', '5', '6', '7', '8<br>Completely<br>engrossed']},
+            labels: ['0<br>A little<br>engrossed', '1', '2', '3', '4<br>Quite<br>engrossed', '5', '6', '7', '8<br>Maximally<br>engrossed']},
         ];
         this.randomize_question_order = false;
         this.scale_width = 500;
