@@ -41,7 +41,7 @@ var exp = (function() {
     // instruction pages
     var block1page1 = `<div class='instructions'>
 
-    <p>For the next 10 to 15 minutes, you'll be helping us 
+    <p>For the next 5 to 8 minutes, you'll be helping us 
     answer the following question: "What makes some games more immersive and engaging than others?"</p>
 
     <p>Specifically, you'll play two games and provide feedback about each one. 
