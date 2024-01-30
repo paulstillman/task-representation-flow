@@ -51,6 +51,7 @@ var exp = (function() {
     *
     */
 
+
     // constructor function for presenting post-practice tile game information and assessing comprehension
     function MakeTaskInstructions(gameType, gameName_1, gameName_2, color, hex, roundLength, pM, round) {
 
@@ -174,9 +175,9 @@ var exp = (function() {
     // create instruction nodes
 
     p.consent = {
-        type: jsPsychInstructions,
-        pages: dmPsych.consentForm(settings),
-        show_clickable_nav: true,
+        type: jsPsychExternalHtml,
+        url: "./html/consent.html",
+        cont_btn: "advance",
     };
 
     p.intro = {
