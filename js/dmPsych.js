@@ -1532,7 +1532,7 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent'>
-                    <p>In the ${gameName_1}, you'll earn tokens for <b>winning streaks</b>.</p>
+                    <p>In the ${gameName_1}, you'll earn tokens for <b>streaks of consecutive successes</b>.</p>
                     <p>Specifically, to earn tokens in the ${gameName_1}, you must activate the tile as many times in a row as possible.</p>
                     <p>You'll earn 10 tokens for every consecutive tile you activate.</p>
                   </div>`,
