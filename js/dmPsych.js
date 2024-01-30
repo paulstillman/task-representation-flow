@@ -438,6 +438,9 @@ const dmPsych = (function() {
             if (lossArray.length == 0) {
               lossArray = makeFeedbackArray();
             };
+            if (blockName !== "practice") {
+              (feedbackType == "plus") ? totalTokens += (finalStreak*10 + 5) : (feedbackType == "minus") ? totalTokens += (finalStreak*10 - 5) : totalTokens += (finalStreak*10);
+            };    
           } else if (tooSlow && streak == 0) {
             let feedbackType = lossArray.pop();
             message = (feedbackType == "plus" && blockName !== "practice") ? noTokens_bonus_html : (feedbackType == "minus" && blockName !== "practice") ? noTokens_loss_html : noTokens_html;
@@ -446,6 +449,9 @@ const dmPsych = (function() {
             if (lossArray.length == 0) {
               lossArray = makeFeedbackArray();
             };
+            if (blockName !== "practice") {
+              (feedbackType == "plus") ? totalTokens += 5 : (feedbackType == "minus") ? totalTokens -= 5 : totalTokens += 0;
+            };    
           } else {
             streak++;
             message = iti_html.replace("{header}", `Current Streak: ${streak}`);
