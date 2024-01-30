@@ -321,7 +321,8 @@ const dmPsych = (function() {
       },
       on_finish: (data) => {
         data.probeDuration = latency[trialNumber];
-        data.response ? tooSlow = 0 : tooSlow = 1;
+        console.log(trialNumber);
+        (data.response && trialNumber < nTrials - 1) ? tooSlow = 0 : tooSlow = 1;
         data.tooSlow = tooSlow;
         data.trialNum = trialNumber;
       },
