@@ -74,7 +74,7 @@ var exp = (function() {
         if (gameType == 'strk') {
             // attention check #1
             a1 = 'Earn as many tokens as possible.';
-            a2 = 'By building winning streaks.';
+            a2 = 'By building streaks.';
             a3 = (pM < .5) ? 'Compared to practice, I will have less time to respond.' : (pM > .5) ? 'Compared to practice, I will have more time to respond.' : 'None of the above.';
         };
 
@@ -106,7 +106,7 @@ var exp = (function() {
                     {
                       prompt: `How do you earn tokens in the ${gameName}?`, 
                       name: 'attnChk2', 
-                      options: ['By activating each individual tile.', 'By building winning streaks.'], 
+                      options: ['By activating each individual tile.', 'By building streaks.'], 
                       required: true
                     },
                     {
@@ -126,7 +126,7 @@ var exp = (function() {
                     {
                       prompt: `How do you earn tokens in the ${gameName}?`, 
                       name: 'attnChk2', 
-                      options: ['By activating each individual tile.', 'By building winning streaks.'], 
+                      options: ['By activating each individual tile.', 'By building streaks.'], 
                       required: true
                     },
                 ];
