@@ -202,7 +202,7 @@ const dmPsych = (function() {
                               </div>`;
 
     const tokens_loss_html = `<div class="outcome-container">
-                                <div class="header-lose" style="color:grey">{header}</div>
+                                <div class="header-win" style="color:${hex}">{header}</div>
                                 <div class="token-text-win" style="color:${hex}">${winFeedback}</div>
                                 <div class="penalty-text">-5 Loss</div>
                               </div>`;
@@ -219,6 +219,7 @@ const dmPsych = (function() {
                                 </div>`;
 
     const noTokens_loss_html = `<div class="outcome-container">
+                                  <div class="header-lose" style="color:grey">{header}</div>
                                   <div class="token-text-lose">${lossFeedback}</div>
                                   <div class="penalty-text">-5 Loss</div>
                                 </div>`;
