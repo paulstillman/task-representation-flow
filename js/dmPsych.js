@@ -1534,7 +1534,7 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent'>
-                    <p>In the ${gameName_1}, you'll earn tokens for <b>streaks of consecutive successes</b>.</p>
+                    <p>In the ${gameName_1}, you'll earn tokens for <b>winning streaks</b>.</p>
                     <p>Specifically, to earn tokens in the ${gameName_1}, you must activate the tile as many times in a row as possible.</p>
                     <p>You'll earn 10 tokens for every consecutive tile you activate.</p>
                   </div>`,
@@ -1591,7 +1591,7 @@ const dmPsych = (function() {
         } else if (round == 2) {
           html = [`<div class='parent' style='text-align: left'>
                     <p>The ${gameName_2} is identical to the ${gameName_1} with one exception:</p>
-                    <p>Instead of earning tokens for each individual tile you activate, you'll earn tokens for <b>winning streaks</b>.</p>
+                    <p>Instead of earning tokens for each individual success, you'll earn tokens for <b>streaks of consecutive successes</b>.</p>
                     <p>Specifically, in the ${gameName_2}, your goal is to activate the tile as many times in a row as possible.</p>
                     <p>You'll earn 10 tokens for every consecutive tile you activate.</p>
                   </div>`,
