@@ -13,8 +13,10 @@ const dmPsych = (function() {
   window.jsPsych = initJsPsych({
     on_finish: () => {
       let boot = jsPsych.data.get().last(1).select('boot').values[0];
-      let totalTokens_1 = jsPsych.data.get().filter({round: 1}).select('totalTokens').max();
-      let totalTokens_2 = jsPsych.data.get().filter({round: 2}).select('totalTokens').max();
+      let totalTokens_1_array = jsPsych.data.get().filter({round: 1}).select('totalTokens').values;
+      let totalTokens_1 = totalTokens_1_array[totalTokens_1_array.length - 1];
+      let totalTokens_2_array = jsPsych.data.get().filter({round: 2}).select('totalTokens').values;
+      let totalTokens_2 = totalTokens_2_array[totalTokens_2_array.length - 1];
       let totalTokens = totalTokens_1 + totalTokens_2;
       if(!boot) {
         document.body.innerHTML = 
