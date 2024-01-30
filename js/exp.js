@@ -20,6 +20,8 @@ var exp = (function() {
         color_2: ['<span style="color: #00aa00; font-weight: bold">green</span>', '<span style="color: #1067e8; font-weight: bold">blue</span>'][1 - colorOrder],
     };
 
+    console.log(settings.pM);
+
     settings.tileHit_1 = `<div class="outcome-container">
                             <div class="header">{header}</div>
                             <div class="box" style="background-color:${settings.hex_1}"></div>
@@ -71,23 +73,23 @@ var exp = (function() {
 
         if (gameType == 'strk') {
             // attention check #1
-            a1 = 'Build streaks of consecutive successes.';
-            a2 = 'You will increase your odds of winning a $100.00 bonus prize.';
-            a3 = (pM < .5) ? 'Less time to activate the tile.' : (pM > .5) ? 'More time to activate the tile.' : 'The same amount of time as in practice.';
+            a1 = 'Earn as many tokens as possible.';
+            a2 = 'By building winning streaks.';
+            a3 = (pM < .5) ? 'Compared to practice, I will have less time to respond.' : (pM > .5) ? 'Compared to practice, I will have more time to respond.' : 'None of the above.';
         };
 
         if (gameType == '1inN') {
             // attention check #1
-            a1 = 'Activate a tile before my six chances are up.';
-            a2 = 'You will increase your odds of winning a $100.00 bonus prize.';
-            a3 = (pM < .5) ? 'Less time to activate the tile.' : (pM > .5) ? 'More time to activate the tile.' : 'The same amount of time as in practice.';
+            a1 = 'Earn as many tokens as possible.';
+            a2 = 'Activate a tile before my six chances are up.';
+            a3 = (pM < .5) ? 'Compared to practice, I will have less time to respond.' : (pM > .5) ? 'Compared to practice, I will have more time to respond.' : 'None of the above.';
         };
 
         if (gameType == 'bern') {
             // attention check #1
-            a1 = 'Activate each individual tile.';
-            a2 = 'You will increase your odds of winning a $100.00 bonus prize.';
-            a3 = (pM < .5) ? 'Less time to activate the tile.' : (pM > .5) ? 'More time to activate the tile.' : 'The same amount of time as in practice.';
+            a1 = 'Earn as many tokens as possible.';
+            a2 = 'By activating each individual tile.';
+            a3 = (pM < .5) ? 'Compared to practice, I will have less time to respond.' : (pM > .5) ? 'Compared to practice, I will have more time to respond.' : 'None of the above.';
         };
 
         const compChk = {
@@ -96,35 +98,35 @@ var exp = (function() {
             questions: () => {
                 const round1_Qs = [
                     {
-                      prompt: `What is the goal of the ${gameName}?`, 
+                      prompt: `What must you do to maximize your odds of winning a $100.00 bonus?`, 
                       name: 'attnChk1', 
-                      options: ['Activate each individual tile.', 'Build streaks of consecutive successes.'], 
+                      options: ['Earn as many tokens as possible.', 'Finish the game as quickly as possible.'],
                       required: true
                     },
                     {
-                      prompt: `By earning tokens...`, 
+                      prompt: `How do you earn tokens in the ${gameName}?`, 
                       name: 'attnChk2', 
-                      options: ['You will increase your odds of winning a $100.00 bonus prize.', 'You will receive bonus points.', 'You will receive $1.00.'],
+                      options: ['By activating each individual tile.', 'By building winning streaks.'], 
                       required: true
                     },
                     {
-                      prompt: `In the ${gameName}, you'll have...`, 
+                      prompt: `Which statement is true?`, 
                       name: 'attnChk3', 
-                      options: ['Less time to activate the tile.', 'More time to activate the tile.', 'The same amount of time as in practice.'], 
+                      options: ['Compared to practice, I will have less time to respond.', 'Compared to practice, I will have more time to respond.', 'None of the above.'], 
                       required: true
                     },
                 ];
                 const round2_Qs = [
                     {
-                      prompt: `What is the goal of the ${gameName}?`, 
+                      prompt: `What must you do to maximize your odds of winning a $100.00 bonus?`, 
                       name: 'attnChk1', 
-                      options: ['Activate each individual tile.', 'Build streaks of consecutive successes.'], 
+                      options: ['Earn as many tokens as possible.', 'Finish the game as quickly as possible.'],
                       required: true
                     },
                     {
-                      prompt: `By earning tokens...`, 
+                      prompt: `How do you earn tokens in the ${gameName}?`, 
                       name: 'attnChk2', 
-                      options: ['You will increase your odds of winning a $100.00 bonus prize.', 'You will receive bonus points.', 'You will receive $1.00.'],
+                      options: ['By activating each individual tile.', 'By building winning streaks.'], 
                       required: true
                     },
                 ];
@@ -245,9 +247,6 @@ var exp = (function() {
 
         <p>To report how immersed and engaged you felt in the ${name},<br>please answer the following questions as honestly as possible.</p>`;
         this.questions = [
-            {prompt: `During the ${name}, how <strong>absorbed</strong> did you feel in what you were doing?`,
-            name: `absorbed`,
-            labels: ["0<br>Not very absorbed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More absorbed than I've ever felt"]},
             {prompt: `During the ${name}, how <strong>immersed</strong> did you feel in what you were doing?`,
             name: `immersed`,
             labels: ["0<br>Not very immersed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More immersed than I've ever felt"]},
@@ -257,9 +256,9 @@ var exp = (function() {
             {prompt: `During the ${name}, how <strong>engrossed</strong> did you feel in what you were doing?`,
             name: `engrossed`,
             labels: ["0<br>Not very engrossed", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>More engrossed than I've ever felt"]},
-            {prompt: `How much of your <b>conscious focus and attention</b> did the ${name} manage to capture?`,
-            name: `attention`,
-            labels: ["0%<br>None of it", '10%', '20%', '30%', '40%', '50%', '60%', '70%', '80%', '90%', "100%<br>All of it"]},
+            {prompt: `How <b>boring</b> was the ${name}?`,
+            name: `boring`,
+            labels: ["0<br>Not at all boring", '1', '2', '3', '4', '5', '6', '7', '8', '9', "10<br>Extremely boring"]},
         ];
         this.randomize_question_order = false;
         this.scale_width = 700;
@@ -415,7 +414,7 @@ var exp = (function() {
     p.save_data = {
         type: jsPsychPipe,
         action: "save",
-        experiment_id: "nKeuinPy4poU",
+        experiment_id: "Pi4TEFFZNVDG",
         filename: dmPsych.filename,
         data_string: ()=>jsPsych.data.get().csv()
     };

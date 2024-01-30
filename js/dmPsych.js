@@ -186,9 +186,9 @@ const dmPsych = (function() {
 
     let losses = 0, round = 1, streak = 0, trialNumber = 0, tooSlow = null, tooFast = null, totalTokens = 0, message;
 
-    const winFeedback = (gameType == "strk") ? "{strk-feedback}" : (blockName == "practice") ? "You won!" : "+10 Tokens";
+    const winFeedback = (gameType == "strk") ? "{strk-feedback}" : (blockName == "practice") ? "Success!" : "+10 Tokens";
 
-    const lossFeedback = (gameType == "strk") ? "{strk-feedback}" : (blockName == "practice") ? "You lost!" : "+0 Tokens";
+    const lossFeedback = (gameType == "strk") ? "{strk-feedback}" : (blockName == "practice") ? "Miss!" : "+0 Tokens";
 
     const tokens_html = `<div class="outcome-container">
                           <div class="header-win" style="color:${hex}">{header}</div>
@@ -434,11 +434,14 @@ const dmPsych = (function() {
             message = (feedbackType == "plus" && blockName !== "practice") ? tokens_bonus_html : (feedbackType == "minus" && blockName !== "practice") ? tokens_loss_html : tokens_html;
             message = (blockName !== "practice") ? message.replace("{strk-feedback}", `+${finalStreak * 10} Tokens`) : message.replace("{strk-feedback}", `Final Streak: ${finalStreak}`); 
             message = (blockName !== "practice") ? message.replace('{header}', `Final Streak: ${finalStreak}`) : message.replace('{header}', ``);
+            if (lossArray.length == 0) {
+              lossArray = makeFeedbackArray();
+            };
           } else if (tooSlow && streak == 0) {
             let feedbackType = lossArray.pop();
             message = (feedbackType == "plus" && blockName !== "practice") ? noTokens_bonus_html : (feedbackType == "minus" && blockName !== "practice") ? noTokens_loss_html : noTokens_html;
             message = (blockName !== "practice") ? message.replace("{strk-feedback}", `+0 Tokens`) : message.replace("{strk-feedback}", `Final Streak: 0`); 
-            message = (blockName !== "practice") ? message.replace('{header}', `Final Streak: ${finalStreak}`) : message.replace('{header}', ``);
+            message = (blockName !== "practice") ? message.replace('{header}', `Final Streak: 0`) : message.replace('{header}', ``);
             if (lossArray.length == 0) {
               lossArray = makeFeedbackArray();
             };
@@ -476,9 +479,9 @@ const dmPsych = (function() {
   // make n-dimensional array of RTs given p(hit) = p
   obj.makeRT = function(nTrials, pWin, roundLength, gameType) {
 
-    const nChunks = nTrials / 10;
-    const nWinsPerChunk = 10 * pWin;
-    const nLossPerChunk = 10 * (1 - pWin);
+    const nChunks = Math.round(nTrials / 10);
+    const nWinsPerChunk = Math.round(10 * pWin);
+    const nLossPerChunk = Math.round(10 * (1 - pWin));
 
     let rtArray = [];
 
@@ -1511,18 +1514,19 @@ const dmPsych = (function() {
 
       if (gameType == 'strk') {
         if (round == 1) {
-          const fasterOrSlower = (pM == .1) ? "you'll have to respond faster than you did" : "you won't have to respond as fast as you did";
+        const fasterOrSlower = (pM < .5) ? "you'll have to respond faster than you did" : (pM > .5) ? "you won't have to respond as fast as you did" : "you'll have to respond just as fast as you did";
           const speed = (pM < .5) ? "less" : (pM > .5) ? "more" : "the same amount of";
           const asIn = (pM == .5) ? "as in" : "compared to";
 
           html = [`<div class='parent'>
                     <p>Practice is now complete.</p>
                     <p>Now that you have a feel for the ${gameName_1}, you'll learn how to earn tokens.</p>
+                    <p>Remember: The more tokens you earn, the better your chances of winning a $100.00 bonus.</p>
                   </div>`,
 
                   `<div class='parent'>
                     <p>In the ${gameName_1}, you'll earn tokens for <b>winning streaks</b>.</p>
-                    <p>Specifically, in the ${gameName_1}, your goal is to activate the tile as many times in a row as possible.</p>
+                    <p>Specifically, to earn tokens in the ${gameName_1}, you must activate the tile as many times in a row as possible.</p>
                     <p>You'll earn 10 tokens for every consecutive tile you activate.</p>
                   </div>`,
 
@@ -1539,33 +1543,33 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent'>
-                    <p>In addition to earning tokens through your performance, you can randomly gain or lose tokens randomly.</p>
+                    <p>In addition to earning tokens through your performance, you can gain or lose tokens randomly.</p>
                     <p>Specifically, at the end of each streak, you have a 20% chance of gaining 5 extra tokens,<br>and a 20% chance of losing 5 tokens.</p>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly win 5 extra tokens after a steak of 3, you'll this message:</p>
+                    <p>If you randomly win 5 extra tokens after a steak of 3, you'll see this message:</p>
                     <div class="header-win" style="top:20%; color:${hex}">Final Streak: 3</div>               
                     <div class="token-text-win" style="color:${hex}">+30 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly lose 5 tokens after a steak of 3, you'll this message:</p>
+                    <p>If you randomly lose 5 tokens after a steak of 3, you'll see this message:</p>
                     <div class="header-win" style="top:20%; color:${hex}">Final Streak: 3</div>               
                     <div class="token-text-win" style="color:${hex}">+30 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly win 5 extra tokens after failing to start a streak, you'll this message:</p>
+                    <p>If you randomly win 5 extra tokens after failing to start a streak, you'll see this message:</p>
                     <div class="header-lose" style="top:20%">Final Streak: 0</div>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly lose 5 tokens after failing to start a streak, you'll this message:</p>
+                    <p>If you randomly lose 5 tokens after failing to start a streak, you'll see this message:</p>
                     <div class="header-lose" style="top:20%">Final Streak: 0</div>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
@@ -1578,7 +1582,7 @@ const dmPsych = (function() {
         } else if (round == 2) {
           html = [`<div class='parent' style='text-align: left'>
                     <p>The ${gameName_2} is identical to the ${gameName_1} with one exception:</p>
-                    <p>Instead of winning tokens for each individual tile you activate, you'll win tokens for <b>winning streaks</b>.</p>
+                    <p>Instead of earning tokens for each individual tile you activate, you'll earn tokens for <b>winning streaks</b>.</p>
                     <p>Specifically, in the ${gameName_2}, your goal is to activate the tile as many times in a row as possible.</p>
                     <p>You'll earn 10 tokens for every consecutive tile you activate.</p>
                   </div>`,
@@ -1610,28 +1614,28 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly win 5 extra tokens after a steak of 3, you'll this message:</p>
+                    <p>If you randomly win 5 extra tokens after a steak of 3, you'll see this message:</p>
                     <div class="header-win" style="top:20%; color:${hex}">Final Streak: 3</div>               
                     <div class="token-text-win" style="color:${hex}">+30 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly lose 5 tokens after a steak of 3, you'll this message:</p>
+                    <p>If you randomly lose 5 tokens after a steak of 3, you'll see this message:</p>
                     <div class="header-win" style="top:20%; color:${hex}">Final Streak: 3</div>               
                     <div class="token-text-win" style="color:${hex}">+30 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly win 5 extra tokens after failing to start a streak, you'll this message:</p>
+                    <p>If you randomly win 5 extra tokens after failing to start a streak, you'll see this message:</p>
                     <div class="header-lose" style="top:20%">Final Streak: 0</div>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you randomly lose 5 tokens after failing to start a streak, you'll this message:</p>
+                    <p>If you randomly lose 5 tokens after failing to start a streak, you'll see this message:</p>
                     <div class="header-lose" style="top:20%">Final Streak: 0</div>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
@@ -1648,6 +1652,7 @@ const dmPsych = (function() {
           html = [`<div class='parent'>
                     <p>Practice is now complete.</p>
                     <p>Now that you have a feel for the ${gameName_1}, you'll learn how to earn tokens.</p>
+                    <p>Remember: The more tokens you earn, the better your chances of winning a $100.00 bonus.</p>
                   </div>`,
 
                   `<div class='parent'>
@@ -1666,30 +1671,30 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent'>
-                    <p>In addition to earning tokens through your performance,<br>you can randomly gain (or lose) tokens at the end of each round.</p>
+                    <p>In addition to earning tokens through your performance,<br>you can gain (or lose) tokens randomly.</p>
                     <p>Specifically, at the end of each round,<br>you have a 20% chance of gaining 5 extra tokens, and a 20% chance of losing 5 tokens.</p>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you lose a round and win 5 extra tokens, you'll this message:</p>
+                    <p>If you lose a round and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you lose a round and lose 5 tokens, you'll this message:</p>
+                    <p>If you lose a round and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you win a round and win 5 extra tokens, you'll this message:</p>
+                    <p>If you win a round and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you win a round and lose 5 tokens, you'll this message:</p>
+                    <p>If you win a round and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
@@ -1709,7 +1714,7 @@ const dmPsych = (function() {
       };
 
       if (gameType == 'bern') {
-        const fasterOrSlower = (pM == .1) ? "you'll have to respond faster than you did" : "you won't have to respond as fast as you did";
+        const fasterOrSlower = (pM < .5) ? "you'll have to respond faster than you did" : (pM > .5) ? "you won't have to respond as fast as you did" : "you'll have to respond just as fast as you did";
         const speed = (pM < .5) ? "less" : (pM > .5) ? "more" : "the same amount of";
         const asIn = (pM == .5) ? "as in" : "compared to";
 
@@ -1717,6 +1722,7 @@ const dmPsych = (function() {
           html = [`<div class='parent'>
                     <p>Practice is now complete.</p>
                     <p>Now that you have a feel for the ${gameName_1}, you'll learn how to earn tokens.</p>
+                    <p>Remember: The more tokens you earn, the better your chances of winning a $100.00 bonus.</p>
                   </div>`,
 
                   `<div class='parent'>
@@ -1736,30 +1742,30 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent'>
-                    <p>In addition to earning tokens through your performance,<br>you can randomly gain (or lose) tokens at the end of each round.</p>
+                    <p>In addition to earning tokens through your performance,<br>you can gain or lose tokens randomly.</p>
                     <p>Specifically, at the end of each round, you have a 20% chance of gaining 5 extra tokens,<br>and a 20% chance of losing 5 tokens.</p>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you activate a tile and win 5 extra tokens, you'll this message:</p>
+                    <p>If you activate a tile and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you activate a tile and lose 5 tokens, you'll this message:</p>
+                    <p>If you activate a tile and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you miss a tile and win 5 extra tokens, you'll this message:</p>
+                    <p>If you miss a tile and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you miss a tile and lose 5 tokens, you'll this message:</p>
+                    <p>If you miss a tile and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
@@ -1771,7 +1777,7 @@ const dmPsych = (function() {
         } else if (round == 2) {
           html = [`<div class='parent' style='text-align: left'>
                     <p>The ${gameName_2} is identical to the ${gameName_1} with one exception:</p>
-                    <p>Instead of winning tokens for streaks, you'll win tokens for <b>each individual tile you activate</b>.</p>
+                    <p>Instead of earning tokens for streaks, you'll earn tokens for <b>each individual tile you activate</b>.</p>
                     <p>Specifically, for each individual tile you activate, you'll win 10 tokens.</p>
                   </div>`,
 
@@ -1790,25 +1796,25 @@ const dmPsych = (function() {
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you activate a tile and win 5 extra tokens, you'll this message:</p>
+                    <p>If you activate a tile and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you activate a tile and lose 5 tokens, you'll this message:</p>
+                    <p>If you activate a tile and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-win" style="color:${hex}">+10 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you miss a tile and win 5 extra tokens, you'll this message:</p>
+                    <p>If you miss a tile and win 5 extra tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="bonus-text">+5 Bonus</div>
                   </div>`,
 
                   `<div class='parent' style='height: 550px'>
-                    <p>If you miss a tile and lose 5 tokens, you'll this message:</p>
+                    <p>If you miss a tile and lose 5 tokens, you'll see this message:</p>
                     <div class="token-text-lose">+0 Tokens</div>
                     <div class="penalty-text">-5 Loss</div>
                   </div>`];
