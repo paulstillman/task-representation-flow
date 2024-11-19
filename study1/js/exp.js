@@ -173,13 +173,13 @@ var exp = (function() {
 
 
     // create instruction nodes
-
+    /* commenting out consent form because it is causing issues
     p.consent = {
         type: jsPsychExternalHtml,
         url: "./html/consent.html",
         cont_btn: "advance",
     };
-
+    */
     p.intro = {
         type: jsPsychInstructions,
         pages: [`<div class='parent' style='text-align: left'>
@@ -424,7 +424,8 @@ var exp = (function() {
 
 }());
 
-const timeline = [exp.consent, exp.intro, 
+const timeline = [ // exp.consent, commenting out consent form
+    exp.intro, 
     exp.round1_howToPlay, exp.practice1, exp.round1_howToEarn, exp.round1, exp.round1_Qs, exp.round1_complete, 
     exp.round2_howToEarn, exp.round2, exp.round2_Qs, exp.demographics]; //exp.save_data]; 
 
