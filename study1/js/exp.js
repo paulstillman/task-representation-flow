@@ -410,7 +410,8 @@ var exp = (function() {
     *
     */
 
-
+/* This is the code we used to save the raw data (with datapipe)
+ * removing it so that it doesn't add others' data to our data
     p.save_data = {
         type: jsPsychPipe,
         action: "save",
@@ -418,14 +419,14 @@ var exp = (function() {
         filename: dmPsych.filename,
         data_string: ()=>jsPsych.data.get().csv()
     };
-
+*/
     return p;
 
 }());
 
 const timeline = [exp.consent, exp.intro, 
     exp.round1_howToPlay, exp.practice1, exp.round1_howToEarn, exp.round1, exp.round1_Qs, exp.round1_complete, 
-    exp.round2_howToEarn, exp.round2, exp.round2_Qs, exp.demographics, exp.save_data];
+    exp.round2_howToEarn, exp.round2, exp.round2_Qs, exp.demographics]; //exp.save_data]; 
 
 // initiate timeline
 jsPsych.run(timeline);
