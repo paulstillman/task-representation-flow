@@ -47,9 +47,7 @@ var exp = (function() {
     <p>Specifically, you'll play two games and provide feedback about each one. 
     By playing games and providing feedback, you'll help us understand how to design games 
     that are as immersive and engaging as possible.</p>
-
-    <p>To make it easier for you to provide feedback, we will explain exactly what we mean by
-    "immersive and engaging." To continue, press "Next".</p></div>`; 
+    </div>`; 
 
     var block2page1 = `<div class='instructions'>
 
@@ -212,21 +210,6 @@ var exp = (function() {
 
     p.Qs = {};
 
-    p.Qs.flowComp = {
-        type: 'survey-multi-choice',
-        preamble: `<div class='instructions'>
-        <p><strong>Welcome!</strong></p>
-        <p>Before you begin this survey, please note the following:</p>
-        <p>Unlike some surveys on Prolific, we NEVER deny payment based on performance
-        or answers to questions. We simply ask that you try your best, and answer 
-        each question as honestly and accurately as possible. No matter what answers you give or how
-        you perform, you will be fully compensated. That is a guarantee.</p>
-        <p>To ensure that you understand this information, please answer the following question.</p></div>`,
-        questions: [
-            {prompt: "Will you receive full payment regardless of how you perform and answer questions?", name: 'attnChk', required: true, 
-            options: ["Yes", "No"]}, 
-        ]
-    };
 
     p.Qs.hole = {
         timeline: [new flowQs('hole', 'Hole in One'), new enjoyQs('hole', 'Hole in One')]
@@ -276,7 +259,6 @@ var exp = (function() {
 }());
   
 var timeline = [
-    exp.Qs.flowComp,
     exp.inst.block1,
     exp.inst.block2,
     exp.tasks.holeInOne,

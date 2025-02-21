@@ -172,11 +172,6 @@ var exp = (function() {
 
     // create instruction nodes
 
-    p.consent = {
-        type: jsPsychInstructions,
-        pages: dmPsych.consentForm(settings),
-        show_clickable_nav: true,
-    };
 
     p.intro = {
         type: jsPsychInstructions,
@@ -425,7 +420,7 @@ var exp = (function() {
 
 }());
 
-const timeline = [exp.consent, exp.intro, 
+const timeline = [exp.intro, 
     exp.round1_howToPlay, exp.practice1, exp.round1_howToEarn, exp.round1, exp.round1_Qs, exp.round1_complete, 
     exp.round2_howToEarn, exp.round2, exp.round2_Qs, exp.demographics]; //, exp.save_data];
 
